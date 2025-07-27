@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Manager - MathCenter Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .admin-nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .page-header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: white;
+        }
+        
+        .content-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .tab-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+        
+        .form-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+        }
+        
+        .form-section h3 {
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .content-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .content-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            color: white;
+        }
+        
+        .content-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .btn-edit {
+            background: #ffa502;
+            color: white;
+        }
+        
+        .btn-delete {
+            background: #ff4757;
+            color: white;
+        }
+        
+        .feature-toggle {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 25px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-switch.active {
+            background: #4facfe;
+        }
+        
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 21px;
+            height: 21px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-switch.active::before {
+            transform: translateX(25px);
+        }
+    </style>
+</head>
+<body>
+    <nav class="admin-nav">
+        <div class="logo">Math<span style="color: #4facfe;">Center</span> Admin</div>
+        <ul class="nav-links">
+            <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="approval-panel.html"><i class="fas fa-shield-alt"></i> Approvals</a></li>
+            <li><a href="course-manager.html"><i class="fas fa-graduation-cap"></i> Courses</a></li>
+            <li><a href="content-manager.html" class="active"><i class="fas fa-edit"></i> Content Manager</a></li>
+            <li><a href="visitor-dashboard.html"><i class="fas fa-users"></i> Visitors</a></li>
+            <li><a href="purchase-dashboard.html"><i class="fas fa-shopping-cart"></i> Purchases</a></li>
+            <li><a href="admin-guide.html"><i class="fas fa-book"></i> Guide</a></li>
+            <li><a href="../master-site.html" target="_blank"><i class="fas fa-globe"></i> View Site</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-edit"></i> Content Manager</h1>
+            <p>Add and manage all site content and features</p>
+        </div>
+        
+        <div class="content-tabs">
+            <button class="tab-btn active" onclick="showTab('features')">Site Features</button>
+            <button class="tab-btn" onclick="showTab('pages')">Page Content</button>
+            <button class="tab-btn" onclick="showTab('videos')">Videos</button>
+            <button class="tab-btn" onclick="showTab('courses')">Courses</button>
+            <button class="tab-btn" onclick="showTab('tools')">Tools</button>
+        </div>
+        
+        <!-- Features Tab -->
+        <div class="tab-content active" id="features-tab">
+            <div class="form-grid">
+                <div class="form-section">
+                    <h3><i class="fas fa-cogs"></i> Site Features Control</h3>
+                    
+
+                    
+                    <div class="feature-toggle">
+                        <span>Live Chat System</span>
+                        <div class="toggle-switch active" onclick="toggleFeature(this, 'liveChat')"></div>
+                    </div>
+                    
+                    <div class="feature-toggle">
+                        <span>Gamification System</span>
+                        <div class="toggle-switch active" onclick="toggleFeature(this, 'gamification')"></div>
+                    </div>
+                    
+                    <div class="feature-toggle">
+                        <span>Virtual Whiteboard</span>
+                        <div class="toggle-switch active" onclick="toggleFeature(this, 'whiteboard')"></div>
+                    </div>
+                    
+                    <div class="feature-toggle">
+                        <span>Collaborative Notes</span>
+                        <div class="toggle-switch active" onclick="toggleFeature(this, 'notes')"></div>
+                    </div>
+                    
+                    <div class="feature-toggle">
+                        <span>Payment System</span>
+                        <div class="toggle-switch active" onclick="toggleFeature(this, 'payments')"></div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3><i class="fas fa-plus"></i> Add Custom Feature</h3>
+                    <form id="feature-form">
+                        <div class="form-group">
+                            <label>Feature Name</label>
+                            <input type="text" class="form-control" id="feature-name" placeholder="Enter feature name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Feature Description</label>
+                            <textarea class="form-control" id="feature-desc" rows="3" placeholder="Describe the feature"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Feature Code (HTML/JS)</label>
+                            <textarea class="form-control" id="feature-code" rows="5" placeholder="Enter HTML/JavaScript code"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Feature</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pages Tab -->
+        <div class="tab-content" id="pages-tab">
+            <div class="form-grid">
+                <div class="form-section">
+                    <h3><i class="fas fa-file"></i> Add/Edit Page Content</h3>
+                    <form id="page-form">
+                        <div class="form-group">
+                            <label>Page Section</label>
+                            <select class="form-control" id="page-section" required>
+                                <option value="">Select Section</option>
+                                <option value="hero">Hero Section</option>
+                                <option value="about">About Section</option>
+                                <option value="features">Features Section</option>
+                                <option value="testimonials">Testimonials</option>
+                                <option value="footer">Footer Content</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" class="form-control" id="page-title" placeholder="Section title">
+                        </div>
+                        <div class="form-group">
+                            <label>Content</label>
+                            <textarea class="form-control" id="page-content" rows="6" placeholder="Enter content (HTML supported)"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Background Image URL</label>
+                            <input type="url" class="form-control" id="page-bg" placeholder="https://example.com/image.jpg">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Page Content</button>
+                    </form>
+                </div>
+                
+                <div class="form-section">
+                    <h3><i class="fas fa-palette"></i> Site Styling</h3>
+                    <form id="style-form">
+                        <div class="form-group">
+                            <label>Primary Color</label>
+                            <input type="color" class="form-control" id="primary-color" value="#4facfe">
+                        </div>
+                        <div class="form-group">
+                            <label>Secondary Color</label>
+                            <input type="color" class="form-control" id="secondary-color" value="#00f2fe">
+                        </div>
+                        <div class="form-group">
+                            <label>Font Family</label>
+                            <select class="form-control" id="font-family">
+                                <option value="Arial">Arial</option>
+                                <option value="Helvetica">Helvetica</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Times New Roman">Times New Roman</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Apply Styling</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Videos Tab -->
+        <div class="tab-content" id="videos-tab">
+            <div class="form-section">
+                <h3><i class="fas fa-video"></i> Add Video Content</h3>
+                <form id="video-content-form">
+                    <div class="form-group">
+                        <label>Video Title</label>
+                        <input type="text" class="form-control" id="video-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>YouTube Video ID</label>
+                        <input type="text" class="form-control" id="video-id" placeholder="e.g., dQw4w9WgXcQ">
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select class="form-control" id="video-category" required>
+                            <option value="algebra">Algebra</option>
+                            <option value="geometry">Geometry</option>
+                            <option value="calculus">Calculus</option>
+                            <option value="trigonometry">Trigonometry</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" id="video-description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Price ($)</label>
+                        <input type="number" class="form-control" id="video-price" step="0.01">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Video</button>
+                </form>
+            </div>
+            
+            <div class="content-list" id="videos-list">
+                <!-- Videos will be loaded here -->
+            </div>
+        </div>
+        
+        <!-- Courses Tab -->
+        <div class="tab-content" id="courses-tab">
+            <div class="form-section">
+                <h3><i class="fas fa-graduation-cap"></i> Add Course</h3>
+                <form id="course-content-form">
+                    <div class="form-group">
+                        <label>Course Title</label>
+                        <input type="text" class="form-control" id="course-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Course Image URL</label>
+                        <input type="url" class="form-control" id="course-image">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" id="course-description" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Price ($)</label>
+                        <input type="number" class="form-control" id="course-price" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Duration</label>
+                        <input type="text" class="form-control" id="course-duration" placeholder="e.g., 4 weeks">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Course</button>
+                </form>
+            </div>
+            
+            <div class="content-list" id="courses-list">
+                <!-- Courses will be loaded here -->
+            </div>
+        </div>
+        
+        <!-- Tools Tab -->
+        <div class="tab-content" id="tools-tab">
+            <div class="form-section">
+                <h3><i class="fas fa-tools"></i> Add Study Tool</h3>
+                <form id="tool-form">
+                    <div class="form-group">
+                        <label>Tool Name</label>
+                        <input type="text" class="form-control" id="tool-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tool Description</label>
+                        <textarea class="form-control" id="tool-description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Tool Icon (Font Awesome class)</label>
+                        <input type="text" class="form-control" id="tool-icon" placeholder="fas fa-calculator">
+                    </div>
+                    <div class="form-group">
+                        <label>Tool URL/Function</label>
+                        <input type="text" class="form-control" id="tool-url" placeholder="URL or JavaScript function">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Tool</button>
+                </form>
+            </div>
+            
+            <div class="content-list" id="tools-list">
+                <!-- Tools will be loaded here -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Tab switching
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            loadContent(tabName);
+        }
+        
+        // Feature toggle
+        function toggleFeature(element, featureName) {
+            element.classList.toggle('active');
+            const isActive = element.classList.contains('active');
+            
+            // Save feature state
+            const features = JSON.parse(localStorage.getItem('siteFeatures') || '{}');
+            features[featureName] = isActive;
+            localStorage.setItem('siteFeatures', JSON.stringify(features));
+            
+            alert(`${featureName} ${isActive ? 'enabled' : 'disabled'}`);
+        }
+        
+        // Load content for each tab
+        function loadContent(tabName) {
+            switch(tabName) {
+                case 'videos':
+                    loadVideos();
+                    break;
+                case 'courses':
+                    loadCourses();
+                    break;
+                case 'tools':
+                    loadTools();
+                    break;
+            }
+        }
+        
+        function loadVideos() {
+            const videos = JSON.parse(localStorage.getItem('siteVideos') || '[]');
+            const container = document.getElementById('videos-list');
+            
+            container.innerHTML = videos.map(video => `
+                <div class="content-item">
+                    <h4>${video.title}</h4>
+                    <p>Category: ${video.category}</p>
+                    <p>Price: $${video.price}</p>
+                    <div class="content-actions">
+                        <button class="btn btn-edit" onclick="editVideo('${video.id}')">Edit</button>
+                        <button class="btn btn-delete" onclick="deleteVideo('${video.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function loadCourses() {
+            const courses = JSON.parse(localStorage.getItem('siteCourses') || '[]');
+            const container = document.getElementById('courses-list');
+            
+            container.innerHTML = courses.map(course => `
+                <div class="content-item">
+                    <h4>${course.title}</h4>
+                    <p>${course.description}</p>
+                    <p>Price: $${course.price}</p>
+                    <div class="content-actions">
+                        <button class="btn btn-edit" onclick="editCourse('${course.id}')">Edit</button>
+                        <button class="btn btn-delete" onclick="deleteCourse('${course.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function loadTools() {
+            const tools = JSON.parse(localStorage.getItem('siteTools') || '[]');
+            const container = document.getElementById('tools-list');
+            
+            container.innerHTML = tools.map(tool => `
+                <div class="content-item">
+                    <h4><i class="${tool.icon}"></i> ${tool.name}</h4>
+                    <p>${tool.description}</p>
+                    <div class="content-actions">
+                        <button class="btn btn-edit" onclick="editTool('${tool.id}')">Edit</button>
+                        <button class="btn btn-delete" onclick="deleteTool('${tool.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Form submissions
+        document.getElementById('feature-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const feature = {
+                id: Date.now().toString(),
+                name: document.getElementById('feature-name').value,
+                description: document.getElementById('feature-desc').value,
+                code: document.getElementById('feature-code').value,
+                enabled: true
+            };
+            
+            const features = JSON.parse(localStorage.getItem('customFeatures') || '[]');
+            features.push(feature);
+            localStorage.setItem('customFeatures', JSON.stringify(features));
+            
+            alert('Custom feature added successfully!');
+            e.target.reset();
+        });
+        
+        document.getElementById('page-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const pageContent = {
+                section: document.getElementById('page-section').value,
+                title: document.getElementById('page-title').value,
+                content: document.getElementById('page-content').value,
+                background: document.getElementById('page-bg').value
+            };
+            
+            const pages = JSON.parse(localStorage.getItem('pageContent') || '{}');
+            pages[pageContent.section] = pageContent;
+            localStorage.setItem('pageContent', JSON.stringify(pages));
+            
+            alert('Page content updated successfully!');
+            e.target.reset();
+        });
+        
+        document.getElementById('video-content-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const video = {
+                id: Date.now().toString(),
+                title: document.getElementById('video-title').value,
+                videoId: document.getElementById('video-id').value,
+                category: document.getElementById('video-category').value,
+                description: document.getElementById('video-description').value,
+                price: document.getElementById('video-price').value
+            };
+            
+            const videos = JSON.parse(localStorage.getItem('siteVideos') || '[]');
+            videos.push(video);
+            localStorage.setItem('siteVideos', JSON.stringify(videos));
+            
+            alert('Video added successfully!');
+            e.target.reset();
+            loadVideos();
+        });
+        
+        document.getElementById('course-content-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const course = {
+                id: Date.now().toString(),
+                title: document.getElementById('course-title').value,
+                image: document.getElementById('course-image').value,
+                description: document.getElementById('course-description').value,
+                price: document.getElementById('course-price').value,
+                duration: document.getElementById('course-duration').value
+            };
+            
+            const courses = JSON.parse(localStorage.getItem('siteCourses') || '[]');
+            courses.push(course);
+            localStorage.setItem('siteCourses', JSON.stringify(courses));
+            
+            alert('Course added successfully!');
+            e.target.reset();
+            loadCourses();
+        });
+        
+        document.getElementById('tool-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const tool = {
+                id: Date.now().toString(),
+                name: document.getElementById('tool-name').value,
+                description: document.getElementById('tool-description').value,
+                icon: document.getElementById('tool-icon').value,
+                url: document.getElementById('tool-url').value
+            };
+            
+            const tools = JSON.parse(localStorage.getItem('siteTools') || '[]');
+            tools.push(tool);
+            localStorage.setItem('siteTools', JSON.stringify(tools));
+            
+            alert('Tool added successfully!');
+            e.target.reset();
+            loadTools();
+        });
+        
+        // Delete functions
+        function deleteVideo(id) {
+            if (confirm('Delete this video?')) {
+                let videos = JSON.parse(localStorage.getItem('siteVideos') || '[]');
+                videos = videos.filter(v => v.id !== id);
+                localStorage.setItem('siteVideos', JSON.stringify(videos));
+                loadVideos();
+            }
+        }
+        
+        function deleteCourse(id) {
+            if (confirm('Delete this course?')) {
+                let courses = JSON.parse(localStorage.getItem('siteCourses') || '[]');
+                courses = courses.filter(c => c.id !== id);
+                localStorage.setItem('siteCourses', JSON.stringify(courses));
+                loadCourses();
+            }
+        }
+        
+        function deleteTool(id) {
+            if (confirm('Delete this tool?')) {
+                let tools = JSON.parse(localStorage.getItem('siteTools') || '[]');
+                tools = tools.filter(t => t.id !== id);
+                localStorage.setItem('siteTools', JSON.stringify(tools));
+                loadTools();
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadContent('features');
+        });
+    </script>
+</body>
+</html>

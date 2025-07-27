@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathCenter - Complete Learning Platform</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .page-section {
+            display: none;
+            min-height: 100vh;
+        }
+        
+        .page-section.active {
+            display: block;
+        }
+        
+        .nav-links a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .floating-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .floating-nav a {
+            color: #666;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-nav a.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .quick-access {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 1000;
+        }
+        
+        .quick-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .quick-btn:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="#" onclick="showPage('home')">Math<span>Center</span></a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#" onclick="showPage('home')" class="active">Home</a></li>
+                    <li><a href="#" onclick="showPage('videos')">Videos</a></li>
+                    <li><a href="#" onclick="showPage('courses')">Courses</a></li>
+                    <li><a href="#" onclick="showPage('tools')">Tools</a></li>
+                    <li><a href="#" onclick="showPage('about')">About</a></li>
+                    <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+                    <li><a href="#" onclick="showPage('dashboard')">My Courses</a></li>
+                    <li><div class="theme-toggle"><i class="fas fa-moon"></i></div></li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <div class="page-section active" id="home-page">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Master Math with <span>MathCenter</span></h1>
+                    <p>Clear explanations. Step-by-step solutions. Ace your exams.</p>
+                    <div class="hero-buttons">
+                        <a href="https://youtube.com" class="btn btn-primary">
+                            <i class="fab fa-youtube"></i> Watch on YouTube
+                        </a>
+                        <a href="#" onclick="showPage('courses')" class="btn btn-secondary">Browse Courses</a>
+                        <a href="#quick-topics" class="btn btn-tertiary">Get Started</a>
+                    </div>
+                </div>
+                <div class="hero-video">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/JwOmHKPNBRY" title="Welcome to MathCenter" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Topics -->
+        <section id="quick-topics" class="quick-topics">
+            <div class="container">
+                <h2>Explore Topics</h2>
+                <div class="topics-grid">
+                    <div class="topic-card" onclick="showPage('videos')">
+                        <div class="topic-icon"><i class="fas fa-superscript"></i></div>
+                        <h3>Algebra</h3>
+                    </div>
+                    <div class="topic-card" onclick="showPage('videos')">
+                        <div class="topic-icon"><i class="fas fa-shapes"></i></div>
+                        <h3>Geometry</h3>
+                    </div>
+                    <div class="topic-card" onclick="showPage('videos')">
+                        <div class="topic-icon"><i class="fas fa-integral"></i></div>
+                        <h3>Calculus</h3>
+                    </div>
+                    <div class="topic-card" onclick="showPage('videos')">
+                        <div class="topic-icon"><i class="fas fa-square-root-alt"></i></div>
+                        <h3>Trigonometry</h3>
+                    </div>
+                    <div class="topic-card" onclick="showPage('videos')">
+                        <div class="topic-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h3>Statistics</h3>
+                    </div>
+                    <div class="topic-card" onclick="showPage('videos')">
+                        <div class="topic-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <h3>SAT Prep</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Videos Page -->
+    <div class="page-section" id="videos-page">
+        <section class="page-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 6rem 0 3rem; text-align: center;">
+            <div class="container">
+                <h1>Video Library</h1>
+                <p>Comprehensive math video lessons for all levels</p>
+            </div>
+        </section>
+        
+        <section style="padding: 4rem 0;">
+            <div class="container">
+                <div class="videos-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+                    <div class="video-card">
+                        <div class="thumbnail">
+                            <img src="https://img.youtube.com/vi/Qyd_v3DGzTM/mqdefault.jpg" alt="Algebra Basics">
+                            <span class="duration">12:45</span>
+                        </div>
+                        <div class="video-info">
+                            <h3>Algebra Basics: Solving Simple Equations</h3>
+                            <p>Learn how to solve basic algebraic equations step by step.</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                <span style="font-weight: 600; color: var(--primary-color)">$19.99</span>
+                                <button class="btn btn-small btn-primary" onclick="purchaseCourse('Algebra Basics', 19.99)">Purchase</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="video-card">
+                        <div class="thumbnail">
+                            <img src="https://img.youtube.com/vi/riXcZT2ICjA/mqdefault.jpg" alt="Calculus Introduction">
+                            <span class="duration">15:20</span>
+                        </div>
+                        <div class="video-info">
+                            <h3>Introduction to Calculus: Limits</h3>
+                            <p>Understanding the concept of limits in calculus.</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                <span style="font-weight: 600; color: var(--primary-color)">$24.99</span>
+                                <button class="btn btn-small btn-primary" onclick="purchaseCourse('Calculus Introduction', 24.99)">Purchase</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Courses Page -->
+    <div class="page-section" id="courses-page">
+        <section class="page-header" style="background: linear-gradient(135deg, #ffd166 0%, #06d6a0 100%); color: white; padding: 6rem 0 3rem; text-align: center;">
+            <div class="container">
+                <h1>Math Courses</h1>
+                <p>Comprehensive video courses to master mathematics at your own pace</p>
+            </div>
+        </section>
+        
+        <section style="padding: 4rem 0;">
+            <div class="container">
+                <div class="courses-grid" id="courses-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+                    <!-- Courses will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Tools Page -->
+    <div class="page-section" id="tools-page">
+        <section class="page-header" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333; padding: 6rem 0 3rem; text-align: center;">
+            <div class="container">
+                <h1>Study Tools</h1>
+                <p>Interactive tools to enhance your math learning experience</p>
+            </div>
+        </section>
+        
+        <section style="padding: 4rem 0;">
+            <div class="container">
+                <div class="tools-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <div class="tool-card">
+                        <div class="tool-icon"><i class="fas fa-calculator"></i></div>
+                        <h3>Scientific Calculator</h3>
+                        <p>Advanced calculator with step-by-step solutions</p>
+                        <button class="btn btn-primary" onclick="openCalculator()">Use Calculator</button>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-icon"><i class="fas fa-question-circle"></i></div>
+                        <h3>Math Quiz Generator</h3>
+                        <p>Test your knowledge with customizable quizzes</p>
+                        <button class="btn btn-primary" onclick="openQuiz()">Take Quiz</button>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-icon"><i class="fas fa-book"></i></div>
+                        <h3>Formula Reference</h3>
+                        <p>Quick access to all important math formulas</p>
+                        <button class="btn btn-primary" onclick="openFormulas()">View Formulas</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- About Page -->
+    <div class="page-section" id="about-page">
+        <section class="page-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 6rem 0 3rem; text-align: center;">
+            <div class="container">
+                <h1>About MathCenter</h1>
+                <p>Making math accessible and enjoyable for everyone</p>
+            </div>
+        </section>
+        
+        <section style="padding: 4rem 0;">
+            <div class="container">
+                <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                    <h2>Our Mission</h2>
+                    <p style="font-size: 1.2rem; line-height: 1.8; margin: 2rem 0;">
+                        At MathCenter, we believe that everyone can master mathematics with the right guidance and resources. 
+                        Our platform provides clear, step-by-step explanations that make complex concepts easy to understand.
+                    </p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 3rem 0;">
+                        <div style="text-align: center;">
+                            <i class="fas fa-users" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                            <h3>10,000+ Students</h3>
+                            <p>Helping students worldwide achieve their math goals</p>
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <i class="fas fa-video" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                            <h3>500+ Videos</h3>
+                            <p>Comprehensive library covering all math topics</p>
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <i class="fas fa-star" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                            <h3>4.9/5 Rating</h3>
+                            <p>Highly rated by students and educators</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Contact Page -->
+    <div class="page-section" id="contact-page">
+        <section class="page-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 6rem 0 3rem; text-align: center;">
+            <div class="container">
+                <h1>Contact Us</h1>
+                <p>Get in touch with our team</p>
+            </div>
+        </section>
+        
+        <section style="padding: 4rem 0;">
+            <div class="container">
+                <div style="max-width: 600px; margin: 0 auto;">
+                    <form id="contact-form">
+                        <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem;">Name</label>
+                            <input type="text" id="name" style="width: 100%; padding: 1rem; border: 1px solid #ddd; border-radius: 8px;" required>
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem;">Email</label>
+                            <input type="email" id="email" style="width: 100%; padding: 1rem; border: 1px solid #ddd; border-radius: 8px;" required>
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem;">Subject</label>
+                            <input type="text" id="subject" style="width: 100%; padding: 1rem; border: 1px solid #ddd; border-radius: 8px;" required>
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem;">Message</label>
+                            <textarea id="message" rows="5" style="width: 100%; padding: 1rem; border: 1px solid #ddd; border-radius: 8px;" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div class="page-section" id="dashboard-page">
+        <section class="page-header" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 4rem 0 2rem; text-align: center;">
+            <div class="container">
+                <h1>My Learning Dashboard</h1>
+                <p>Track your course purchases and access approved content</p>
+            </div>
+        </section>
+        
+        <section style="padding: 4rem 0;">
+            <div class="container">
+                <div id="dashboard-content">
+                    <div style="text-align: center; padding: 3rem;">
+                        <p>Enter your email to view your courses</p>
+                        <div style="margin: 2rem 0;">
+                            <input type="email" id="user-email-input" placeholder="Your email address" style="padding: 1rem; border: 1px solid #ddd; border-radius: 8px; margin-right: 1rem;">
+                            <button class="btn btn-primary" onclick="loadUserDashboard()">Load Dashboard</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Quick Access Buttons -->
+    <div class="quick-access">
+        <button class="quick-btn" onclick="openChat()" title="Live Chat">
+            <i class="fas fa-comments"></i>
+        </button>
+        <button class="quick-btn" onclick="showPage('dashboard')" title="My Courses">
+            <i class="fas fa-user"></i>
+        </button>
+        <button class="quick-btn" onclick="window.open('admin/master-admin.html')" title="Admin Panel">
+            <i class="fas fa-cog"></i>
+        </button>
+    </div>
+
+    <!-- Floating Navigation -->
+    <div class="floating-nav">
+        <a href="#" onclick="showPage('home')" class="active">Home</a>
+        <a href="#" onclick="showPage('courses')">Courses</a>
+        <a href="#" onclick="showPage('tools')">Tools</a>
+        <a href="#" onclick="showPage('contact')">Contact</a>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/progress-tracker.js"></script>
+    <script src="js/live-chat.js"></script>
+    <script src="js/real-payment.js"></script>
+    <script src="js/gamification.js"></script>
+    <script src="js/advanced-features.js"></script>
+    <script src="js/content-loader.js"></script>
+    
+    <script>
+        // Page navigation
+        function showPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page-section').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageName + '-page').classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-links a, .floating-nav a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            document.querySelectorAll(`[onclick="showPage('${pageName}')"]`).forEach(link => {
+                link.classList.add('active');
+            });
+            
+            // Load page-specific content
+            if (pageName === 'courses') loadCourses();
+            if (pageName === 'dashboard') loadDashboard();
+        }
+        
+        // Load courses
+        function loadCourses() {
+            const coursesGrid = document.getElementById('courses-grid');
+            const fallbackCourses = [
+                { title: "Algebra Mastery Course", price: 29.99, image: "https://img.youtube.com/vi/LwCRRUa8yTU/mqdefault.jpg" },
+                { title: "Calculus Fundamentals", price: 39.99, image: "https://img.youtube.com/vi/HfACrKJ_Y2w/mqdefault.jpg" },
+                { title: "Geometry Essentials", price: 24.99, image: "https://img.youtube.com/vi/302eJ3TzJQU/mqdefault.jpg" }
+            ];
+            
+            coursesGrid.innerHTML = fallbackCourses.map(course => `
+                <div class="course-card" style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s ease;">
+                    <div class="course-thumbnail">
+                        <img src="${course.image}" alt="${course.title}" style="width: 100%; height: 200px; object-fit: cover;">
+                    </div>
+                    <div class="course-info" style="padding: 1.5rem;">
+                        <h3 style="margin-bottom: 1rem;">${course.title}</h3>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 1.2rem; font-weight: 600; color: var(--primary-color);">$${course.price}</span>
+                            <button class="btn btn-primary" onclick="purchaseCourse('${course.title}', ${course.price})">Purchase</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Purchase course
+        function purchaseCourse(title, price) {
+            if (window.realPaymentSystem) {
+                window.realPaymentSystem.showPaymentModal(title, price);
+            } else {
+                alert(`Purchase ${title} for $${price}`);
+            }
+        }
+        
+        // Load user dashboard
+        function loadUserDashboard() {
+            const email = document.getElementById('user-email-input').value;
+            if (!email) return;
+            
+            localStorage.setItem('currentUserEmail', email);
+            const userPurchases = JSON.parse(localStorage.getItem('userPurchases') || '{}');
+            const purchases = userPurchases[email] || [];
+            
+            const dashboardContent = document.getElementById('dashboard-content');
+            
+            if (purchases.length === 0) {
+                dashboardContent.innerHTML = `
+                    <div style="text-align: center; padding: 3rem;">
+                        <h3>No Purchases Yet</h3>
+                        <p>You haven't made any course purchases yet.</p>
+                        <button class="btn btn-primary" onclick="showPage('courses')">Browse Courses</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            dashboardContent.innerHTML = `
+                <h2>My Courses</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                    ${purchases.map(purchase => `
+                        <div style="background: white; border-radius: 15px; padding: 2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                            <h3>${purchase.course}</h3>
+                            <div style="margin: 1rem 0;">
+                                <span style="padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; ${
+                                    purchase.status === 'approved' ? 'background: #d4edda; color: #155724;' :
+                                    purchase.status === 'pending' ? 'background: #fff3cd; color: #856404;' :
+                                    'background: #f8d7da; color: #721c24;'
+                                }">
+                                    ${purchase.status.toUpperCase()}
+                                </span>
+                            </div>
+                            ${purchase.status === 'approved' ? 
+                                '<button class="btn btn-primary" onclick="accessCourse(\'' + purchase.course + '\')">Start Learning</button>' :
+                                '<p style="color: #666;">Waiting for admin approval</p>'
+                            }
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+        
+        // Access course
+        function accessCourse(courseTitle) {
+            const courseMap = {
+                "Algebra Mastery Course": "https://www.youtube.com/watch?v=LwCRRUa8yTU",
+                "Calculus Fundamentals": "https://www.youtube.com/watch?v=HfACrKJ_Y2w",
+                "Geometry Essentials": "https://www.youtube.com/watch?v=302eJ3TzJQU"
+            };
+            
+            const url = courseMap[courseTitle] || "https://www.youtube.com/watch?v=JwOmHKPNBRY";
+            window.open(url, '_blank');
+        }
+        
+        // Tool functions
+        function openCalculator() {
+            showPage('tools');
+            // Calculator functionality would be implemented here
+            alert('Calculator feature coming soon!');
+        }
+        
+        function openQuiz() {
+            alert('Quiz feature coming soon!');
+        }
+        
+        function openFormulas() {
+            alert('Formula reference coming soon!');
+        }
+        
+        function openChat() {
+            // Live chat is already loaded via live-chat.js
+            document.getElementById('chat-toggle').click();
+        }
+        
+        // Contact form
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Simulate sending email
+            if (window.notificationSystem) {
+                notificationSystem.success('Message Sent', 'Thank you for contacting us! We\'ll get back to you soon.');
+            } else {
+                alert('Message sent successfully!');
+            }
+            
+            this.reset();
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load default content
+            loadCourses();
+        });
+    </script>
+</body>
+</html>

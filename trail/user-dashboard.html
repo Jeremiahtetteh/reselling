@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Courses - MathCenter</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .dashboard-hero {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 4rem 0 2rem;
+            text-align: center;
+        }
+        
+        .user-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .purchase-status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .status-card {
+            background: var(--background-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+        
+        .status-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .status-pending {
+            border-left: 4px solid #ffc107;
+        }
+        
+        .status-approved {
+            border-left: 4px solid #4caf50;
+        }
+        
+        .status-declined {
+            border-left: 4px solid #f44336;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .badge-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .badge-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .badge-declined {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .course-actions {
+            margin-top: 1rem;
+        }
+        
+        .email-setup {
+            background: var(--light-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin: 2rem 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">Math<span>Center</span></a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="videos.html">Video Library</a></li>
+                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="tools.html">Study Tools</a></li>
+                    <li><a href="downloads.html">Downloads</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="user-dashboard.html" class="active">My Courses</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+            <div class="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard Hero -->
+    <section class="dashboard-hero">
+        <div class="container">
+            <h1>My Learning Dashboard</h1>
+            <p>Track your course purchases and access approved content</p>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div>
+                    <h3 id="user-email">Please enter your email</h3>
+                    <p>Student Dashboard</p>
+                </div>
+                <button class="btn btn-secondary" onclick="changeEmail()" style="margin-left: auto;">
+                    <i class="fas fa-edit"></i> Change Email
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Purchase Status -->
+    <section class="purchase-status-section">
+        <div class="container">
+            <h2>My Course Purchases</h2>
+            
+            <div class="email-setup" id="email-setup">
+                <h3>Welcome to MathCenter!</h3>
+                <p>Enter your email address to view your course purchases and access approved content.</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
+                    <input type="email" id="email-input" placeholder="Enter your email address" style="padding: 0.8rem; border-radius: 8px; border: 1px solid #ddd; min-width: 250px;">
+                    <button class="btn btn-primary" onclick="setUserEmail()">
+                        <i class="fas fa-check"></i> Continue
+                    </button>
+                </div>
+            </div>
+            
+            <div class="purchase-status" id="purchase-status" style="display: none;">
+                <!-- Purchase status cards will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Math<span>Center</span></h3>
+                    <p>Making math easy and accessible for everyone through clear, engaging video lessons.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="videos.html">Videos</a></li>
+                        <li><a href="courses.html">Courses</a></li>
+                        <li><a href="tools.html">Study Tools</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="downloads.html">Worksheets</a></li>
+                        <li><a href="tools.html#formulas">Formula Reference</a></li>
+                        <li><a href="tools.html#calculator">Calculator</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="contact.html">Contact Form</a></li>
+                        <li><a href="mailto:info@mathcenter.com">info@mathcenter.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 MathCenter. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/purchase-approval.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        let currentUserEmail = localStorage.getItem('currentUserEmail');
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            if (currentUserEmail) {
+                showDashboard();
+            } else {
+                showEmailSetup();
+            }
+        });
+        
+        function showEmailSetup() {
+            document.getElementById('email-setup').style.display = 'block';
+            document.getElementById('purchase-status').style.display = 'none';
+            document.getElementById('user-email').textContent = 'Please enter your email';
+        }
+        
+        function showDashboard() {
+            document.getElementById('email-setup').style.display = 'none';
+            document.getElementById('purchase-status').style.display = 'grid';
+            document.getElementById('user-email').textContent = currentUserEmail;
+            loadUserPurchases();
+        }
+        
+        function setUserEmail() {
+            const email = document.getElementById('email-input').value;
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+            
+            currentUserEmail = email;
+            localStorage.setItem('currentUserEmail', email);
+            
+            // Set in purchase approval system
+            if (window.purchaseApproval) {
+                window.purchaseApproval.setCurrentUserEmail(email);
+            }
+            
+            showDashboard();
+        }
+        
+        function changeEmail() {
+            const newEmail = prompt('Enter your new email address:', currentUserEmail);
+            if (newEmail && newEmail.includes('@')) {
+                currentUserEmail = newEmail;
+                localStorage.setItem('currentUserEmail', newEmail);
+                showDashboard();
+            }
+        }
+        
+        function loadUserPurchases() {
+            const userPurchases = JSON.parse(localStorage.getItem('userPurchases') || '{}');
+            const purchases = userPurchases[currentUserEmail] || [];
+            const container = document.getElementById('purchase-status');
+            
+            if (purchases.length === 0) {
+                container.innerHTML = `
+                    <div class="status-card" style="grid-column: 1/-1; text-align: center;">
+                        <i class="fas fa-shopping-cart" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+                        <h3>No Purchases Yet</h3>
+                        <p>You haven't made any course purchases yet. Browse our courses to get started!</p>
+                        <a href="courses.html" class="btn btn-primary" style="margin-top: 1rem;">
+                            <i class="fas fa-graduation-cap"></i> Browse Courses
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = purchases.map(purchase => {
+                const statusClass = `status-${purchase.status}`;
+                const badgeClass = `badge-${purchase.status}`;
+                
+                let statusIcon = '';
+                let statusText = '';
+                let actionButton = '';
+                
+                switch(purchase.status) {
+                    case 'pending':
+                        statusIcon = 'fas fa-clock';
+                        statusText = 'Waiting for Approval';
+                        actionButton = `
+                            <div style="background: #fff3cd; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #ffc107;">
+                                <strong>⏳ Admin Approval Required</strong><br>
+                                <small>Your payment was successful! An admin will review and approve your purchase shortly (usually within a few minutes).</small>
+                            </div>
+                            <button class="btn btn-secondary" onclick="checkStatus('${purchase.id}')">
+                                <i class="fas fa-sync"></i> Check Status
+                            </button>
+                        `;
+                        break;
+                    case 'approved':
+                        statusIcon = 'fas fa-check-circle';
+                        statusText = 'Access Granted';
+                        actionButton = `
+                            <button class="btn btn-primary" onclick="accessCourse('${purchase.course}')">
+                                <i class="fas fa-play"></i> Start Learning
+                            </button>
+                        `;
+                        break;
+                    case 'declined':
+                        statusIcon = 'fas fa-times-circle';
+                        statusText = 'Request Declined';
+                        actionButton = `
+                            <button class="btn btn-secondary" onclick="contactSupport('${purchase.course}')">
+                                <i class="fas fa-envelope"></i> Contact Support
+                            </button>
+                        `;
+                        break;
+                }
+                
+                return `
+                    <div class="status-card ${statusClass}">
+                        <div class="status-badge ${badgeClass}">
+                            <i class="${statusIcon}"></i>
+                            ${statusText}
+                        </div>
+                        <h3>${purchase.course}</h3>
+                        <p style="color: #666; margin-bottom: 1rem;">
+                            ${purchase.status === 'pending' ? 'Your purchase request is being reviewed by our team.' : 
+                              purchase.status === 'approved' ? 'Congratulations! You now have access to this course.' :
+                              'Your purchase request was declined. Contact support for more information.'}
+                        </p>
+                        ${purchase.reason ? `<p style="color: #f44336; font-size: 0.9rem; margin-bottom: 1rem;"><strong>Reason:</strong> ${purchase.reason}</p>` : ''}
+                        <div class="course-actions">
+                            ${actionButton}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function checkStatus(purchaseId) {
+            // Reload purchases to check for updates
+            loadUserPurchases();
+            
+            const userPurchases = JSON.parse(localStorage.getItem('userPurchases') || '{}');
+            const purchases = userPurchases[currentUserEmail] || [];
+            const purchase = purchases.find(p => p.id === purchaseId);
+            
+            if (purchase && purchase.status === 'approved') {
+                showNotification('🎉 Great news! Your course has been approved!', 'success');
+            } else {
+                showNotification('Still pending approval. We\'ll notify you once it\'s ready!', 'info');
+            }
+        }
+        
+        function accessCourse(courseTitle) {
+            const courseMap = {
+                "Algebra Basics: Solving Simple Equations": "https://www.youtube.com/watch?v=Qyd_v3DGzTM",
+                "Introduction to Calculus: Limits": "https://www.youtube.com/watch?v=riXcZT2ICjA",
+                "Geometry: Triangle Proofs Made Easy": "https://www.youtube.com/watch?v=JUzH3UXDH7E",
+                "Algebra Mastery Course": "https://www.youtube.com/watch?v=LwCRRUa8yTU",
+                "Calculus Fundamentals": "https://www.youtube.com/watch?v=HfACrKJ_Y2w",
+                "Geometry Essentials": "https://www.youtube.com/watch?v=302eJ3TzJQU"
+            };
+            
+            const url = courseMap[courseTitle] || "https://www.youtube.com/watch?v=JwOmHKPNBRY";
+            window.open(url, '_blank');
+            
+            showNotification('🚀 Launching your course! Happy learning!', 'success');
+        }
+        
+        function contactSupport(courseTitle) {
+            const subject = `Question about declined purchase: ${courseTitle}`;
+            const body = `Hi MathCenter Support,\n\nI have a question about my declined purchase for "${courseTitle}". Could you please provide more information?\n\nThank you,\n${currentUserEmail}`;
+            
+            window.location.href = `mailto:info@mathcenter.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#4caf50' : type === 'error' ? '#f44336' : '#2196f3'};
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 12px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                z-index: 1001;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 4000);
+        }
+        
+        // Auto-refresh purchases every 30 seconds
+        setInterval(() => {
+            if (currentUserEmail) {
+                loadUserPurchases();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
